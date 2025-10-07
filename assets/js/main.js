@@ -82,4 +82,51 @@
 	// WOW active
     new WOW().init();
 
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById('contactForm');
+        if (!form) return console.error("Contact form not found");
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const token = grecaptcha.getResponse();
+            if (!token) {
+                alert("Please complete the CAPTCHA.");
+                return;
+            }
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                number: document.getElementById('number').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                'g-recaptcha-response': token
+            };
+
+            try {
+                const res = await fetch('http://localhost:38029/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    alert("✅ Message sent successfully!");
+                    form.reset();
+                    grecaptcha.reset();
+                } else {
+                    alert("❌ CAPTCHA verification failed or server error.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("⚠️ Something went wrong.");
+            }
+        });
+    });
+
+
 })();
