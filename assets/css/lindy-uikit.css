@@ -1380,8 +1380,8 @@ p {
     CONTACT-6 CSS
 ================================ */
 .contact-style-6 {
-  /* background: #F3F3F3; */
-  background: #ffffff;
+  background: #F3F3F3;
+  /* background: #ffffff; */
   padding: 100px 0 70px;
   position: relative;
   z-index: 1;
